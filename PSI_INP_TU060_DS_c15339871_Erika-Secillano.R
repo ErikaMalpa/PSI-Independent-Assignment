@@ -340,7 +340,7 @@ vifmodel
 
 #############################MODEL 2 END#################################
 #LOGISTIC MODEL
-logmodel2 <- glm(target ~ housing + loan, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
+logmodel2 <- glm(target ~ housing + age, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
 
 #Full summary of the model
 summary(logmodel2)
@@ -373,7 +373,7 @@ DescTools::PseudoR2(logmodel2, which="CoxSnell")
 DescTools::PseudoR2(logmodel2, which="Nagelkerke")
 
 #Output the marital and education and ROC plot
-ROC(form=target ~ marital+education, data=bank_full,plot="ROC")
+ROC(form=target ~ housing + age, data=bank_full,plot="ROC")
 
 #Check the assumption of linearity of independent variables and log odds using a Hosmer-Lemeshow test, if this is not statistically significant we are ok
 generalhoslem::logitgof(bank_full$target,fitted(logmodel2))

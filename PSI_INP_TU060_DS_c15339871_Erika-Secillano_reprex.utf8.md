@@ -190,7 +190,7 @@ sum(!complete.cases(bank_full))
 aggr_plot <- aggr(bank_full, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(bank_full), cex.axis=.7, gap=3, ylab=c("Histogram of missing data","Pattern"))
 ```
 
-![](https://i.imgur.com/C6xPHXE.png)
+![](https://i.imgur.com/GmtrsT0.png)
 
     #> 
     #>  Variables sorted by number of missings: 
@@ -225,7 +225,7 @@ aggr_plot <- aggr(bank_full, col=c('navyblue','red'), numbers=TRUE, sortVars=TRU
                    upper = "circle",
                    tl.col = "black")
 
-![](https://i.imgur.com/vf9AD1X.png)
+![](https://i.imgur.com/U4lDNqH.png)
 
 ``` r
 
@@ -325,7 +325,7 @@ age_sub <- ggplot (bank_full, aes(x=age)) +
 grid.arrange(age_dis,age_box_plot,age_marital,age_sub, ncol = 2, nrow = 2)
 ```
 
-![](https://i.imgur.com/oJavbwM.png)
+![](https://i.imgur.com/fHbO9jJ.png)
 
 ``` r
 #####PLOT OTHER VARIABLES AGE END####
@@ -340,7 +340,7 @@ ggplot(data = bank_full, aes(x=education, fill=target)) +
   guides(fill=guide_legend(title="Subscription of Term Deposit"))
 ```
 
-![](https://i.imgur.com/wrnv1dD.png)
+![](https://i.imgur.com/v1IwdjG.png)
 
 ``` r
 
@@ -359,7 +359,7 @@ ggplot(data=bank_full, aes(x=campaign, fill=target))+
 #> Warning: Removed 4 rows containing missing values (geom_bar).
 ```
 
-![](https://i.imgur.com/fcy2hE1.png)
+![](https://i.imgur.com/Xhofpbo.png)
 
 ``` r
 
@@ -407,7 +407,7 @@ duration_camp <- bank_full %>% filter(campaign < 63) %>%
 grid.arrange(duration_count,duration_camp, ncol = 2)
 ```
 
-![](https://i.imgur.com/e8fCgCm.png)
+![](https://i.imgur.com/Cy2xyE6.png)
 
 ``` r
 
@@ -426,7 +426,7 @@ bank_full <- bank_full[complete.cases(bank_full),]
 multi.hist(bank_full[,sapply(bank_full, is.numeric)])
 ```
 
-![](https://i.imgur.com/eBNLhP7.png)
+![](https://i.imgur.com/bPVILmH.png)
 
 ``` r
 
@@ -440,7 +440,7 @@ pastecs::stat.desc(bank_full$age, basic=F)
 qqnorm(bank_full$age); qqline(bank_full$age,col ="steelblue", lwd = 2)
 ```
 
-![](https://i.imgur.com/bV292DD.png)
+![](https://i.imgur.com/d1uawBN.png)
 
 ``` r
 
@@ -451,7 +451,7 @@ bank_full %>% gather(age, key = 'var', value = 'value') %>%
   theme_bw()
 ```
 
-![](https://i.imgur.com/L4wAfN1.png)
+![](https://i.imgur.com/iTsOubI.png)
 
 ``` r
 
@@ -738,6 +738,11 @@ DescTools::PseudoR2(logmodel1, which="Nagelkerke")
 
 #Output the marital and education and ROC plot
 ROC(form=target ~ marital+education, data=bank_full,plot="ROC")
+```
+
+![](https://i.imgur.com/EFfWfQZ.png)
+
+``` r
 
 #Check the assumption of linearity of independent variables and log odds using a Hosmer-Lemeshow test, if this is not statistically significant we are ok
 generalhoslem::logitgof(bank_full$target,fitted(logmodel1))
@@ -766,32 +771,32 @@ vifmodel
 
 #############################MODEL 2 END#################################
 #LOGISTIC MODEL
-logmodel2 <- glm(target ~ housing + loan, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
+logmodel2 <- glm(target ~ housing + age, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
 
 #Full summary of the model
 summary(logmodel2)
 #> 
 #> Call:
-#> glm(formula = target ~ housing + loan, family = binomial(link = logit), 
+#> glm(formula = target ~ housing + age, family = binomial(link = logit), 
 #>     data = bank_full, na.action = na.exclude)
 #> 
 #> Deviance Residuals: 
 #>     Min       1Q   Median       3Q      Max  
-#> -0.5289  -0.5289  -0.5137  -0.5137   2.0645  
+#> -0.7223  -0.5335  -0.5054  -0.4852   2.1703  
 #> 
 #> Coefficients:
-#>             Estimate Std. Error z value Pr(>|z|)    
-#> (Intercept) -1.95869    0.02656 -73.755   <2e-16 ***
-#> housingyes   0.06248    0.03469   1.801   0.0716 .  
-#> loanyes     -0.04609    0.04800  -0.960   0.3369    
+#>              Estimate Std. Error z value Pr(>|z|)    
+#> (Intercept) -2.498433   0.068803 -36.313   <2e-16 ***
+#> housingyes   0.059589   0.034689   1.718   0.0858 .  
+#> age          0.013498   0.001591   8.481   <2e-16 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> (Dispersion parameter for binomial family taken to be 1)
 #> 
 #>     Null deviance: 23160  on 30487  degrees of freedom
-#> Residual deviance: 23156  on 30485  degrees of freedom
-#> AIC: 23162
+#> Residual deviance: 23087  on 30485  degrees of freedom
+#> AIC: 23093
 #> 
 #> Number of Fisher Scoring iterations: 4
 
@@ -799,87 +804,89 @@ summary(logmodel2)
 lmtest::lrtest(logmodel2)
 #> Likelihood ratio test
 #> 
-#> Model 1: target ~ housing + loan
+#> Model 1: target ~ housing + age
 #> Model 2: target ~ 1
-#>   #Df LogLik Df  Chisq Pr(>Chisq)
-#> 1   3 -11578                     
-#> 2   1 -11580 -2 4.0259     0.1336
+#>   #Df LogLik Df  Chisq Pr(>Chisq)    
+#> 1   3 -11544                         
+#> 2   1 -11580 -2 72.987  < 2.2e-16 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ## odds ratios 
 cbind(Estimate=round(coef(logmodel2),4),
       OR=round(exp(coef(logmodel2)),4))
 #>             Estimate     OR
-#> (Intercept)  -1.9587 0.1410
-#> housingyes    0.0625 1.0645
-#> loanyes      -0.0461 0.9550
+#> (Intercept)  -2.4984 0.0822
+#> housingyes    0.0596 1.0614
+#> age           0.0135 1.0136
 
 # Probability of answering yes when the loan is no 
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*0)
 #> (Intercept) 
-#>   0.1236089
+#>  0.07596811
 
 #Probability of answering yes when the loan is no
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*1)
 #> (Intercept) 
-#>   0.1305382
+#>  0.08025821
 
 #Probability of answering yes when the loan is no and age
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*0 +coef(logmodel2)[3]*0+coef(logmodel2)[3]*1)
 #> (Intercept) 
-#>   0.1187018
+#>  0.07692105
 
 #Probability of answering yes when the loan is yes and age
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*1 +coef(logmodel2)[3]*0+coef(logmodel2)[3]*1)
 #> (Intercept) 
-#>   0.1253953
+#>  0.08126024
 
 #Chi-square plus significance
 lmtest::lrtest(logmodel2)
 #> Likelihood ratio test
 #> 
-#> Model 1: target ~ housing + loan
+#> Model 1: target ~ housing + age
 #> Model 2: target ~ 1
-#>   #Df LogLik Df  Chisq Pr(>Chisq)
-#> 1   3 -11578                     
-#> 2   1 -11580 -2 4.0259     0.1336
+#>   #Df LogLik Df  Chisq Pr(>Chisq)    
+#> 1   3 -11544                         
+#> 2   1 -11580 -2 72.987  < 2.2e-16 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 #Pseudo Rsquared 
 DescTools::PseudoR2(logmodel2, which="CoxSnell")
-#>     CoxSnell 
-#> 0.0001320407
+#>    CoxSnell 
+#> 0.002391101
 
 DescTools::PseudoR2(logmodel2, which="Nagelkerke")
-#>   Nagelkerke 
-#> 0.0002481187
+#>  Nagelkerke 
+#> 0.004493135
 
 #Output the marital and education and ROC plot
-ROC(form=target ~ marital+education, data=bank_full,plot="ROC")
+ROC(form=target ~ housing + age, data=bank_full,plot="ROC")
 ```
 
-![](https://i.imgur.com/CAkvMA3.png)
+![](https://i.imgur.com/t2mMhmS.png)
 
 ``` r
 
 #Check the assumption of linearity of independent variables and log odds using a Hosmer-Lemeshow test, if this is not statistically significant we are ok
 generalhoslem::logitgof(bank_full$target,fitted(logmodel2))
-#> Warning in generalhoslem::logitgof(bank_full$target, fitted(logmodel2)): Not
-#> possible to compute 10 rows. There might be too few observations.
 #> 
 #>  Hosmer and Lemeshow test (binary model)
 #> 
 #> data:  bank_full$target, fitted(logmodel2)
-#> X-squared = 0.21658, df = 1, p-value = 0.6417
+#> X-squared = 347.35, df = 8, p-value < 2.2e-16
 
 #Collinearity
 vifmodel<-car::vif(logmodel2)
 vifmodel
-#>  housing     loan 
-#> 1.002157 1.002157
+#>  housing      age 
+#> 1.000021 1.000021
 
 #Tolerance
 1/vifmodel
-#>   housing      loan 
-#> 0.9978478 0.9978478
+#>   housing       age 
+#> 0.9999792 0.9999792
 #############################MODEL 2 END#################################
 
 
