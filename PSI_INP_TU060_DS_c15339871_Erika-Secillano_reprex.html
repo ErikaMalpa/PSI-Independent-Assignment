@@ -1107,38 +1107,32 @@ vifmodel
 
 #############################MODEL 2 END#################################
 #LOGISTIC MODEL
-logmodel2 &lt;- glm(target ~ marital + education, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
+logmodel2 &lt;- glm(target ~ housing + loan, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
 
 #Full summary of the model
 summary(logmodel2)
 #&gt; 
 #&gt; Call:
-#&gt; glm(formula = target ~ marital + education, family = binomial(link = logit), 
+#&gt; glm(formula = target ~ housing + loan, family = binomial(link = logit), 
 #&gt;     data = bank_full, na.action = na.exclude)
 #&gt; 
 #&gt; Deviance Residuals: 
 #&gt;     Min       1Q   Median       3Q      Max  
-#&gt; -0.8004  -0.5437  -0.4999  -0.4473   2.2382  
+#&gt; -0.5289  -0.5289  -0.5137  -0.5137   2.0645  
 #&gt; 
 #&gt; Coefficients:
-#&gt;                              Estimate Std. Error z value Pr(&gt;|z|)    
-#&gt; (Intercept)                  -1.90478    0.07713 -24.694  &lt; 2e-16 ***
-#&gt; maritalmarried                0.03799    0.05770   0.658 0.510325    
-#&gt; maritalsingle                 0.26714    0.06032   4.428 9.49e-06 ***
-#&gt; educationbasic.6y            -0.38478    0.10826  -3.554 0.000379 ***
-#&gt; educationbasic.9y            -0.51481    0.08043  -6.401 1.54e-10 ***
-#&gt; educationhigh.school         -0.19509    0.06976  -2.797 0.005163 ** 
-#&gt; educationilliterate           0.89282    0.67966   1.314 0.188973    
-#&gt; educationprofessional.course -0.15002    0.07569  -1.982 0.047481 *  
-#&gt; educationuniversity.degree    0.02990    0.06648   0.450 0.652946    
+#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept) -1.95869    0.02656 -73.755   &lt;2e-16 ***
+#&gt; housingyes   0.06248    0.03469   1.801   0.0716 .  
+#&gt; loanyes     -0.04609    0.04800  -0.960   0.3369    
 #&gt; ---
 #&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 #&gt; 
 #&gt; (Dispersion parameter for binomial family taken to be 1)
 #&gt; 
 #&gt;     Null deviance: 23160  on 30487  degrees of freedom
-#&gt; Residual deviance: 23000  on 30479  degrees of freedom
-#&gt; AIC: 23018
+#&gt; Residual deviance: 23156  on 30485  degrees of freedom
+#&gt; AIC: 23162
 #&gt; 
 #&gt; Number of Fisher Scoring iterations: 4
 
@@ -1146,68 +1140,58 @@ summary(logmodel2)
 lmtest::lrtest(logmodel2)
 #&gt; Likelihood ratio test
 #&gt; 
-#&gt; Model 1: target ~ marital + education
+#&gt; Model 1: target ~ housing + loan
 #&gt; Model 2: target ~ 1
-#&gt;   #Df LogLik Df  Chisq Pr(&gt;Chisq)    
-#&gt; 1   9 -11500                         
-#&gt; 2   1 -11580 -8 160.25  &lt; 2.2e-16 ***
-#&gt; ---
-#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt;   #Df LogLik Df  Chisq Pr(&gt;Chisq)
+#&gt; 1   3 -11578                     
+#&gt; 2   1 -11580 -2 4.0259     0.1336
 
 ## odds ratios 
 cbind(Estimate=round(coef(logmodel2),4),
       OR=round(exp(coef(logmodel2)),4))
-#&gt;                              Estimate     OR
-#&gt; (Intercept)                   -1.9048 0.1489
-#&gt; maritalmarried                 0.0380 1.0387
-#&gt; maritalsingle                  0.2671 1.3062
-#&gt; educationbasic.6y             -0.3848 0.6806
-#&gt; educationbasic.9y             -0.5148 0.5976
-#&gt; educationhigh.school          -0.1951 0.8228
-#&gt; educationilliterate            0.8928 2.4420
-#&gt; educationprofessional.course  -0.1500 0.8607
-#&gt; educationuniversity.degree     0.0299 1.0303
+#&gt;             Estimate     OR
+#&gt; (Intercept)  -1.9587 0.1410
+#&gt; housingyes    0.0625 1.0645
+#&gt; loanyes      -0.0461 0.9550
 
 # Probability of answering yes when the loan is no 
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*0)
 #&gt; (Intercept) 
-#&gt;   0.1295686
+#&gt;   0.1236089
 
 #Probability of answering yes when the loan is no
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*1)
 #&gt; (Intercept) 
-#&gt;   0.1339135
+#&gt;   0.1305382
 
 #Probability of answering yes when the loan is no and age
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*0 +coef(logmodel2)[3]*0+coef(logmodel2)[3]*1)
 #&gt; (Intercept) 
-#&gt;   0.1627865
+#&gt;   0.1187018
 
 #Probability of answering yes when the loan is yes and age
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*1 +coef(logmodel2)[3]*0+coef(logmodel2)[3]*1)
 #&gt; (Intercept) 
-#&gt;   0.1680304
+#&gt;   0.1253953
 
 #Chi-square plus significance
 lmtest::lrtest(logmodel2)
 #&gt; Likelihood ratio test
 #&gt; 
-#&gt; Model 1: target ~ marital + education
+#&gt; Model 1: target ~ housing + loan
 #&gt; Model 2: target ~ 1
-#&gt;   #Df LogLik Df  Chisq Pr(&gt;Chisq)    
-#&gt; 1   9 -11500                         
-#&gt; 2   1 -11580 -8 160.25  &lt; 2.2e-16 ***
-#&gt; ---
-#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt;   #Df LogLik Df  Chisq Pr(&gt;Chisq)
+#&gt; 1   3 -11578                     
+#&gt; 2   1 -11580 -2 4.0259     0.1336
 
 #Pseudo Rsquared 
 DescTools::PseudoR2(logmodel2, which=&quot;CoxSnell&quot;)
-#&gt;    CoxSnell 
-#&gt; 0.005242304
+#&gt;     CoxSnell 
+#&gt; 0.0001320407
 
 DescTools::PseudoR2(logmodel2, which=&quot;Nagelkerke&quot;)
-#&gt;  Nagelkerke 
-#&gt; 0.009850854
+#&gt;   Nagelkerke 
+#&gt; 0.0002481187
 
 #Output the marital and education and ROC plot
 ROC(form=target ~ marital+education, data=bank_full,plot=&quot;ROC&quot;)</code></pre>
@@ -1221,20 +1205,18 @@ generalhoslem::logitgof(bank_full$target,fitted(logmodel2))
 #&gt;  Hosmer and Lemeshow test (binary model)
 #&gt; 
 #&gt; data:  bank_full$target, fitted(logmodel2)
-#&gt; X-squared = 14.036, df = 7, p-value = 0.05054
+#&gt; X-squared = 0.21658, df = 1, p-value = 0.6417
 
 #Collinearity
 vifmodel&lt;-car::vif(logmodel2)
 vifmodel
-#&gt;               GVIF Df GVIF^(1/(2*Df))
-#&gt; marital   1.039695  2        1.009779
-#&gt; education 1.039695  6        1.003249
+#&gt;  housing     loan 
+#&gt; 1.002157 1.002157
 
 #Tolerance
 1/vifmodel
-#&gt;                GVIF        Df GVIF^(1/(2*Df))
-#&gt; marital   0.9618207 0.5000000       0.9903154
-#&gt; education 0.9618207 0.1666667       0.9967613
+#&gt;   housing      loan 
+#&gt; 0.9978478 0.9978478
 #############################MODEL 2 END#################################
 
 

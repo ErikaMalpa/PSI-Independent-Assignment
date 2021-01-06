@@ -190,7 +190,7 @@ sum(!complete.cases(bank_full))
 aggr_plot <- aggr(bank_full, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(bank_full), cex.axis=.7, gap=3, ylab=c("Histogram of missing data","Pattern"))
 ```
 
-![](https://i.imgur.com/VVPpxJI.png)
+![](https://i.imgur.com/WpYnOgp.png)
 
     #> 
     #>  Variables sorted by number of missings: 
@@ -225,7 +225,7 @@ aggr_plot <- aggr(bank_full, col=c('navyblue','red'), numbers=TRUE, sortVars=TRU
                    upper = "circle",
                    tl.col = "black")
 
-![](https://i.imgur.com/9alsXof.png)
+![](https://i.imgur.com/XMzeZVL.png)
 
 ``` r
 
@@ -325,7 +325,7 @@ age_sub <- ggplot (bank_full, aes(x=age)) +
 grid.arrange(age_dis,age_box_plot,age_marital,age_sub, ncol = 2, nrow = 2)
 ```
 
-![](https://i.imgur.com/TfBKwYd.png)
+![](https://i.imgur.com/GxGFlq5.png)
 
 ``` r
 #####PLOT OTHER VARIABLES AGE END####
@@ -340,7 +340,7 @@ ggplot(data = bank_full, aes(x=education, fill=target)) +
   guides(fill=guide_legend(title="Subscription of Term Deposit"))
 ```
 
-![](https://i.imgur.com/oMvjt6h.png)
+![](https://i.imgur.com/Dgo2Yxy.png)
 
 ``` r
 
@@ -359,7 +359,7 @@ ggplot(data=bank_full, aes(x=campaign, fill=target))+
 #> Warning: Removed 4 rows containing missing values (geom_bar).
 ```
 
-![](https://i.imgur.com/kPuwzAQ.png)
+![](https://i.imgur.com/jRZlyNi.png)
 
 ``` r
 
@@ -407,7 +407,7 @@ duration_camp <- bank_full %>% filter(campaign < 63) %>%
 grid.arrange(duration_count,duration_camp, ncol = 2)
 ```
 
-![](https://i.imgur.com/E1XVdnZ.png)
+![](https://i.imgur.com/qFJwcaU.png)
 
 ``` r
 
@@ -426,7 +426,7 @@ bank_full <- bank_full[complete.cases(bank_full),]
 multi.hist(bank_full[,sapply(bank_full, is.numeric)])
 ```
 
-![](https://i.imgur.com/lboS2AE.png)
+![](https://i.imgur.com/v2OX6EO.png)
 
 ``` r
 
@@ -440,7 +440,7 @@ pastecs::stat.desc(bank_full$age, basic=F)
 qqnorm(bank_full$age); qqline(bank_full$age,col ="steelblue", lwd = 2)
 ```
 
-![](https://i.imgur.com/IWhX4pM.png)
+![](https://i.imgur.com/YmimQnl.png)
 
 ``` r
 
@@ -451,7 +451,7 @@ bank_full %>% gather(age, key = 'var', value = 'value') %>%
   theme_bw()
 ```
 
-![](https://i.imgur.com/YZD4E4n.png)
+![](https://i.imgur.com/42ppzWO.png)
 
 ``` r
 
@@ -766,38 +766,32 @@ vifmodel
 
 #############################MODEL 2 END#################################
 #LOGISTIC MODEL
-logmodel2 <- glm(target ~ marital + education, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
+logmodel2 <- glm(target ~ housing + loan, data = bank_full, na.action = na.exclude, family = binomial(link=logit))
 
 #Full summary of the model
 summary(logmodel2)
 #> 
 #> Call:
-#> glm(formula = target ~ marital + education, family = binomial(link = logit), 
+#> glm(formula = target ~ housing + loan, family = binomial(link = logit), 
 #>     data = bank_full, na.action = na.exclude)
 #> 
 #> Deviance Residuals: 
 #>     Min       1Q   Median       3Q      Max  
-#> -0.8004  -0.5437  -0.4999  -0.4473   2.2382  
+#> -0.5289  -0.5289  -0.5137  -0.5137   2.0645  
 #> 
 #> Coefficients:
-#>                              Estimate Std. Error z value Pr(>|z|)    
-#> (Intercept)                  -1.90478    0.07713 -24.694  < 2e-16 ***
-#> maritalmarried                0.03799    0.05770   0.658 0.510325    
-#> maritalsingle                 0.26714    0.06032   4.428 9.49e-06 ***
-#> educationbasic.6y            -0.38478    0.10826  -3.554 0.000379 ***
-#> educationbasic.9y            -0.51481    0.08043  -6.401 1.54e-10 ***
-#> educationhigh.school         -0.19509    0.06976  -2.797 0.005163 ** 
-#> educationilliterate           0.89282    0.67966   1.314 0.188973    
-#> educationprofessional.course -0.15002    0.07569  -1.982 0.047481 *  
-#> educationuniversity.degree    0.02990    0.06648   0.450 0.652946    
+#>             Estimate Std. Error z value Pr(>|z|)    
+#> (Intercept) -1.95869    0.02656 -73.755   <2e-16 ***
+#> housingyes   0.06248    0.03469   1.801   0.0716 .  
+#> loanyes     -0.04609    0.04800  -0.960   0.3369    
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> (Dispersion parameter for binomial family taken to be 1)
 #> 
 #>     Null deviance: 23160  on 30487  degrees of freedom
-#> Residual deviance: 23000  on 30479  degrees of freedom
-#> AIC: 23018
+#> Residual deviance: 23156  on 30485  degrees of freedom
+#> AIC: 23162
 #> 
 #> Number of Fisher Scoring iterations: 4
 
@@ -805,74 +799,64 @@ summary(logmodel2)
 lmtest::lrtest(logmodel2)
 #> Likelihood ratio test
 #> 
-#> Model 1: target ~ marital + education
+#> Model 1: target ~ housing + loan
 #> Model 2: target ~ 1
-#>   #Df LogLik Df  Chisq Pr(>Chisq)    
-#> 1   9 -11500                         
-#> 2   1 -11580 -8 160.25  < 2.2e-16 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>   #Df LogLik Df  Chisq Pr(>Chisq)
+#> 1   3 -11578                     
+#> 2   1 -11580 -2 4.0259     0.1336
 
 ## odds ratios 
 cbind(Estimate=round(coef(logmodel2),4),
       OR=round(exp(coef(logmodel2)),4))
-#>                              Estimate     OR
-#> (Intercept)                   -1.9048 0.1489
-#> maritalmarried                 0.0380 1.0387
-#> maritalsingle                  0.2671 1.3062
-#> educationbasic.6y             -0.3848 0.6806
-#> educationbasic.9y             -0.5148 0.5976
-#> educationhigh.school          -0.1951 0.8228
-#> educationilliterate            0.8928 2.4420
-#> educationprofessional.course  -0.1500 0.8607
-#> educationuniversity.degree     0.0299 1.0303
+#>             Estimate     OR
+#> (Intercept)  -1.9587 0.1410
+#> housingyes    0.0625 1.0645
+#> loanyes      -0.0461 0.9550
 
 # Probability of answering yes when the loan is no 
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*0)
 #> (Intercept) 
-#>   0.1295686
+#>   0.1236089
 
 #Probability of answering yes when the loan is no
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*1)
 #> (Intercept) 
-#>   0.1339135
+#>   0.1305382
 
 #Probability of answering yes when the loan is no and age
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*0 +coef(logmodel2)[3]*0+coef(logmodel2)[3]*1)
 #> (Intercept) 
-#>   0.1627865
+#>   0.1187018
 
 #Probability of answering yes when the loan is yes and age
 arm::invlogit(coef(logmodel2)[1]+ coef(logmodel2)[2]*1 +coef(logmodel2)[3]*0+coef(logmodel2)[3]*1)
 #> (Intercept) 
-#>   0.1680304
+#>   0.1253953
 
 #Chi-square plus significance
 lmtest::lrtest(logmodel2)
 #> Likelihood ratio test
 #> 
-#> Model 1: target ~ marital + education
+#> Model 1: target ~ housing + loan
 #> Model 2: target ~ 1
-#>   #Df LogLik Df  Chisq Pr(>Chisq)    
-#> 1   9 -11500                         
-#> 2   1 -11580 -8 160.25  < 2.2e-16 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>   #Df LogLik Df  Chisq Pr(>Chisq)
+#> 1   3 -11578                     
+#> 2   1 -11580 -2 4.0259     0.1336
 
 #Pseudo Rsquared 
 DescTools::PseudoR2(logmodel2, which="CoxSnell")
-#>    CoxSnell 
-#> 0.005242304
+#>     CoxSnell 
+#> 0.0001320407
 
 DescTools::PseudoR2(logmodel2, which="Nagelkerke")
-#>  Nagelkerke 
-#> 0.009850854
+#>   Nagelkerke 
+#> 0.0002481187
 
 #Output the marital and education and ROC plot
 ROC(form=target ~ marital+education, data=bank_full,plot="ROC")
 ```
 
-![](https://i.imgur.com/etah84J.png)
+![](https://i.imgur.com/yTgYpXX.png)
 
 ``` r
 
@@ -884,20 +868,18 @@ generalhoslem::logitgof(bank_full$target,fitted(logmodel2))
 #>  Hosmer and Lemeshow test (binary model)
 #> 
 #> data:  bank_full$target, fitted(logmodel2)
-#> X-squared = 14.036, df = 7, p-value = 0.05054
+#> X-squared = 0.21658, df = 1, p-value = 0.6417
 
 #Collinearity
 vifmodel<-car::vif(logmodel2)
 vifmodel
-#>               GVIF Df GVIF^(1/(2*Df))
-#> marital   1.039695  2        1.009779
-#> education 1.039695  6        1.003249
+#>  housing     loan 
+#> 1.002157 1.002157
 
 #Tolerance
 1/vifmodel
-#>                GVIF        Df GVIF^(1/(2*Df))
-#> marital   0.9618207 0.5000000       0.9903154
-#> education 0.9618207 0.1666667       0.9967613
+#>   housing      loan 
+#> 0.9978478 0.9978478
 #############################MODEL 2 END#################################
 
 

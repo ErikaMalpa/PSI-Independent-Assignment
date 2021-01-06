@@ -1,20 +1,3 @@
-#' ---
-#' output:
-#'   md_document:
-#'     pandoc_args:
-#'       - '--from=markdown-implicit_figures'
-#'       - '--to=commonmark'
-#'       - '--wrap=preserve'
-#' ---
-
-
-
-#+ reprex-setup, include = FALSE
-options(tidyverse.quiet = TRUE)
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", error = TRUE)
-knitr::opts_knit$set(upload.fun = knitr::imgur_upload)
-
-#+ reprex-body
 ###LOAD###
 library(knitr)      # web widget
 library(tidyverse)  # data manipulation
@@ -421,9 +404,3 @@ count(bank_full$age)
 library(reprex)
 r.file <- "PSI_INP_TU060_DS_c15339871_Erika-Secillano.r" ## path to your R script file
 reprex(input = r.file, outfile = NA)
-
-
-
-#' <sup>Created on `r Sys.Date()` by the [reprex package](https://reprex.tidyverse.org) (v`r utils::packageVersion("reprex")`)</sup>
-
-
