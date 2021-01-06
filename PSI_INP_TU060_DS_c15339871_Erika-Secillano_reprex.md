@@ -190,7 +190,7 @@ sum(!complete.cases(bank_full))
 aggr_plot <- aggr(bank_full, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(bank_full), cex.axis=.7, gap=3, ylab=c("Histogram of missing data","Pattern"))
 ```
 
-![](https://i.imgur.com/WpYnOgp.png)
+![](https://i.imgur.com/C6xPHXE.png)
 
     #> 
     #>  Variables sorted by number of missings: 
@@ -225,7 +225,7 @@ aggr_plot <- aggr(bank_full, col=c('navyblue','red'), numbers=TRUE, sortVars=TRU
                    upper = "circle",
                    tl.col = "black")
 
-![](https://i.imgur.com/XMzeZVL.png)
+![](https://i.imgur.com/vf9AD1X.png)
 
 ``` r
 
@@ -325,7 +325,7 @@ age_sub <- ggplot (bank_full, aes(x=age)) +
 grid.arrange(age_dis,age_box_plot,age_marital,age_sub, ncol = 2, nrow = 2)
 ```
 
-![](https://i.imgur.com/GxGFlq5.png)
+![](https://i.imgur.com/oJavbwM.png)
 
 ``` r
 #####PLOT OTHER VARIABLES AGE END####
@@ -340,7 +340,7 @@ ggplot(data = bank_full, aes(x=education, fill=target)) +
   guides(fill=guide_legend(title="Subscription of Term Deposit"))
 ```
 
-![](https://i.imgur.com/Dgo2Yxy.png)
+![](https://i.imgur.com/wrnv1dD.png)
 
 ``` r
 
@@ -359,7 +359,7 @@ ggplot(data=bank_full, aes(x=campaign, fill=target))+
 #> Warning: Removed 4 rows containing missing values (geom_bar).
 ```
 
-![](https://i.imgur.com/jRZlyNi.png)
+![](https://i.imgur.com/fcy2hE1.png)
 
 ``` r
 
@@ -407,7 +407,7 @@ duration_camp <- bank_full %>% filter(campaign < 63) %>%
 grid.arrange(duration_count,duration_camp, ncol = 2)
 ```
 
-![](https://i.imgur.com/qFJwcaU.png)
+![](https://i.imgur.com/e8fCgCm.png)
 
 ``` r
 
@@ -426,7 +426,7 @@ bank_full <- bank_full[complete.cases(bank_full),]
 multi.hist(bank_full[,sapply(bank_full, is.numeric)])
 ```
 
-![](https://i.imgur.com/v2OX6EO.png)
+![](https://i.imgur.com/eBNLhP7.png)
 
 ``` r
 
@@ -440,7 +440,7 @@ pastecs::stat.desc(bank_full$age, basic=F)
 qqnorm(bank_full$age); qqline(bank_full$age,col ="steelblue", lwd = 2)
 ```
 
-![](https://i.imgur.com/YmimQnl.png)
+![](https://i.imgur.com/bV292DD.png)
 
 ``` r
 
@@ -451,7 +451,7 @@ bank_full %>% gather(age, key = 'var', value = 'value') %>%
   theme_bw()
 ```
 
-![](https://i.imgur.com/42ppzWO.png)
+![](https://i.imgur.com/L4wAfN1.png)
 
 ``` r
 
@@ -856,7 +856,7 @@ DescTools::PseudoR2(logmodel2, which="Nagelkerke")
 ROC(form=target ~ marital+education, data=bank_full,plot="ROC")
 ```
 
-![](https://i.imgur.com/yTgYpXX.png)
+![](https://i.imgur.com/CAkvMA3.png)
 
 ``` r
 
